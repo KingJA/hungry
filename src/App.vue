@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <!-- <div id="tab">tab</div>-->
     <!--    <p>
           <router-link to="/goods">商品</router-link>
@@ -33,12 +33,14 @@
   export default {
     data() {
       return {
-        sell: {}
+        seller: {}
       }
     },
     created() {
+
       this.$http.get('api/seller').then((response) => {
-       this.sell=response.data.data;
+        this.seller = response.data.data;
+        console.log(this.seller);
       })
 
     },

@@ -3,6 +3,7 @@ import App from './App'
 import router from './router'
 // import VueRecource from 'vue-resource'
 import Axios from 'axios'
+import 'common/stylus/index.styl';
 
 Vue.config.productionTip = false;
 // Vue.use(VueRecource)
