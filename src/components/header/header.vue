@@ -59,7 +59,6 @@
       .content
         display inline-block
         margin-left 16px
-        font-size 14px
         .title
           margin-bottom 10px
           .brand
@@ -82,10 +81,11 @@
         .support
           .icon
             display inline-block
+            vertical-align top
             width 12px
             height 12px
             margin-right 4px
-            background-size  12px 12px
+            background-size 12px 12px
             background-repeat no-repeat
             &.decrease
               bg-icon('decrease_1')
@@ -97,6 +97,8 @@
               bg-icon('invoice_1')
             &.special
               bg-icon('special_1')
-
+          .text
+            line-height 12px
+            font-size 10px
 
 </style>
