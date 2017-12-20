@@ -20,8 +20,8 @@
         return 'star_' + this.size;
       },
       itemClasses() {
-
-
+        let result=[];
+        let score=Math.floor(this.score*2)/2;
       }
     }
   }
