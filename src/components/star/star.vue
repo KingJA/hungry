@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h1>fdfdf</h1>
-
+  <div class="star" :class="startType">
+    <span v-for="itemClass in itemClasses" :class="itemClass" class="star-item"></span>
   </div>
 
 </template>
@@ -14,6 +13,15 @@
       },
       score: {
         type: Number
+      }
+    },
+    computed: {
+      startType: function () {
+        return 'star_' + this.size;
+      },
+      itemClasses() {
+
+
       }
     }
   }
