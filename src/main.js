@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from './router/index.js';
 // import VueRecource from 'vue-resource'
 import Axios from 'axios'
 import 'common/stylus/index.styl';
