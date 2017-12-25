@@ -2,7 +2,7 @@
   <div class="cartcontrol">
     <div class="cart-decrease icon-remove_circle_outline" v-show="food.count>0" @click="decreaseCart"></div>
     <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
-    <div class="cart-add icon-add_circle" @click="addCart"></div>
+    <div class="cart-add icon-add_circle" @click.stop.prevent="addCart"></div>
 
   </div>
 
@@ -18,14 +18,21 @@
       }
     },
     methods: {
-      addCart() {
+      addCart(event) {
+        console.log(event);
+        if (!event._constructed) {
+          return;
+        }
         if (!this.food.count) {
           Vue.set(this.food, 'count', 1);
         } else {
           this.food.count++;
         }
       },
-      decreaseCart() {
+      decreaseCart(event) {
+        if (!event._constructed) {
+          return;
+        }
         if (this.food.count) {
           this.food.count--;
         }

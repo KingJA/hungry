@@ -41,12 +41,11 @@
 
 
     </div>
-    <shopcart :deliveryPrice="seller.deliveryPrice" :selectGoods="selectGoods" :minPrice="seller.minPrice"></shopcart>
+    <shopcart :deliveryPrice="seller.deliveryPrice" :selectFoods="selectFoods" :minPrice="seller.minPrice"></shopcart>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
   import BScroll from 'better-scroll'
   import shopcart from 'components/shopcart/shopcart'
   import cartcontrol from 'components/cartcontrol/cartcontrol'
@@ -91,22 +90,24 @@
         }
         return 0;
       },
-      selectGoods() {
-        let selectGoods = [];
+      selectFoods() {
+        let foods = [];
         this.goods.forEach((good) => {
           good.foods.forEach((food) => {
             if (food.count) {
-              selectGoods.push(food)
+              foods.push(food);
             }
-          })
+          });
         });
-        return selectGoods;
+        return foods;
       }
 
     },
     methods: {
       selectMenu(index) {
-        console.log(index);
+        if (!event._constructed) {
+          return;
+        }
         let foodList = this.$refs.foodList;
         let targetItem = foodList[index];
         this.foodsScroll.scrollToElement(targetItem, 300);
