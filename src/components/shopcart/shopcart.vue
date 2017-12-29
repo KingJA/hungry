@@ -13,7 +13,7 @@
           <div class="desc">另需配送费¥{{deliveryPrice}}</div>
         </div>
         <div class="content-right">
-          <div class="pay" :class="payClass">{{payDesc}}</div>
+          <div class="pay" :class="payClass" @click.stop.prevent="pay">{{payDesc}}</div>
         </div>
       </div>
 
@@ -41,7 +41,10 @@
 
 
     </div>
-    <div class="list-mask" v-show="listShow" transition="mask"></div>
+
+    <transition name="mask">
+      <div class="list-mask" v-show="listShow" @click="hideList"></div>
+    </transition>
   </div>
 </template>
 
@@ -76,10 +79,18 @@
         }
         this.fade = !this.fade;
       },
+      hideList() {
+        this.fade=false;
+      },
       empty() {
         this.selectFoods.forEach((food) => {
           food.count = 0;
         });
+      },
+      pay() {
+        if(this.totalPrice>=this.minPrice) {
+          alert(`需要支付${this.totalPrice}元`);
+        }
       }
     },
     components: {
@@ -247,7 +258,7 @@
       width 100%
       transform: translate3d(0, -100%, 0)
       &.fade-enter-active, &.fade-leave-active
-        transition all 0.3s
+        transition all 0.5s
       &.fade-enter, &.fade-leave-to
         transform: translate3d(0, 0, 0)
       .list-header
@@ -290,4 +301,20 @@
             position absolute
             right 0
             bottom 6px
+
+  .list-mask
+    position fixed
+    top 0
+    left 0
+    width 100%
+    height 100%
+    z-index 40
+    opacity 1
+    background rgba(7, 17, 27, 0.5)
+    backdrop-filter blur(10px)
+    &.mask-enter-active, &.mask-leave-active
+      transition all 0.5s
+    &.mask-enter, &.mask-leave-to
+      opacity 0
+      background rgba(7, 17, 27, 0)
 </style>

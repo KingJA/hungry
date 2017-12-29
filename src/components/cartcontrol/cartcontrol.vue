@@ -1,6 +1,7 @@
 <template>
   <div class="cartcontrol">
-    <div class="cart-decrease icon-remove_circle_outline" v-show="food.count>0" @click="decreaseCart"></div>
+    <div class="cart-decrease icon-remove_circle_outline" v-show="food.count>0"
+         @click.stop.prevent="decreaseCart"></div>
     <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
     <div class="cart-add icon-add_circle" @click.stop.prevent="addCart"></div>
 
@@ -19,7 +20,6 @@
     },
     methods: {
       addCart(event) {
-        console.log(event);
         if (!event._constructed) {
           return;
         }

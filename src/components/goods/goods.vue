@@ -15,7 +15,7 @@
         <li v-for="item in goods" class="food-list" ref="foodList">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item">
+            <li v-for="food in item.foods" class="food-item" @click="selectFood(food,$event)">
               <div class="icon">
                 <img :src="food.icon" width="57" height="57">
               </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="price">
                   <span class="now">¥{{food.price}}</span><span v-if="food.oldPrice"
-                                                                class="now">¥{{food.oldPrice}}</span>
+                                                                class="old">¥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
                   <cartcontrol :food="food"></cartcontrol>
@@ -42,6 +42,7 @@
 
     </div>
     <shopcart :deliveryPrice="seller.deliveryPrice" :selectFoods="selectFoods" :minPrice="seller.minPrice"></shopcart>
+    <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
@@ -49,10 +50,11 @@
   import BScroll from 'better-scroll'
   import shopcart from 'components/shopcart/shopcart'
   import cartcontrol from 'components/cartcontrol/cartcontrol'
+  import food from 'components/food/food'
 
   export default {
     components: {
-      shopcart, cartcontrol
+      shopcart, cartcontrol, food
     },
     props: {
       seller: {
@@ -64,7 +66,8 @@
         discountMap: ['decrease', 'discount', 'guarantee', 'invoice', 'special'],
         goods: [],
         listHeight: [],
-        scrollY: 0
+        scrollY: 0,
+        selectedFood: {}
       }
     },
     created() {
@@ -137,6 +140,13 @@
           height += item.clientHeight;
           this.listHeight.push(height);
         }
+      },
+      selectFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs.food.show();
       }
     }
   }
