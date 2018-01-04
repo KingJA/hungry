@@ -28,6 +28,10 @@
             </div>
           </li>
         </ul>
+        <div class="favorite" @click="toggleFavorite">
+          <span class="icon-favorite" :class="{'active':favorited}"></span>
+          <span class="text">{{favoriteText}}</span>
+        </div>
 
       </div>
       <split></split>
@@ -49,7 +53,7 @@
       <split></split>
       <div class="pics">
         <h1 class="title">商家实景</h1>
-        <div class="pics-wrapper"ref="picsWrapper">
+        <div class="pics-wrapper" ref="picsWrapper">
           <ul class="pics-ul" ref="pics">
             <li v-for="pic in seller.pics" class="pics-item">
               <img :src="pic" width="120" height="90">
@@ -73,11 +77,17 @@
   import star from 'components/star/star'
   import split from 'components/split/split'
   import BScroll from 'better-scroll'
+  import {saveToLocal, loadFromLocal} from 'common/js/store';
 
   export default {
     props: {
       seller: {
         type: Object
+      }
+    },
+    computed: {
+      favoriteText() {
+        return this.favorited ? '已收藏' : '收藏';
       }
     },
     methods: {
@@ -108,6 +118,14 @@
           this.picsScroll.refresh();
         }
 
+      },
+      toggleFavorite(event) {
+        console.log(1);
+        if (!event._constructed) {
+          return;
+        }
+        this.favorited = !this.favorited;
+        saveToLocal(this.seller.id, 'favorited', this.favorited);
       }
     },
     components: {
@@ -115,7 +133,10 @@
     },
     data() {
       return {
-        discountMap: [],
+        // discountMap: [],
+        favorited: (() => {
+          return loadFromLocal(this.seller.id, 'favorited', false);
+        })()
       }
     },
     mounted() {
@@ -149,6 +170,7 @@
     width 100%
     overflow hidden
     .overview
+      position relative
       padding 18px
       .title
         font-size 14px
@@ -188,6 +210,24 @@
             font-size 24px
             color rgb(7, 17, 27)
             font-weight 200
+      .favorite
+        width 50px
+        position absolute
+        top 18px
+        right 11px
+        text-align center
+        .icon-favorite
+          font-size 24px
+          line-height 24px
+          display block
+          margin-bottom 4px
+          color #d4d6d9
+          &.active
+            color rgb(240, 20, 20)
+        .text
+          font-size 10px
+          line-height 10px
+          color rgb(77, 85, 93)
     .bulletin
       padding 18px 18px 0 18px
       .bulletin-wrapper

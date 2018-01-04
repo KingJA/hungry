@@ -23,6 +23,7 @@
             <span class="time">{{seller.deliveryTime}}分钟</span>
           </div>
         </div>
+
       </div>
       <split></split>
       <ratingselect :select-type="selectType" :desc="desc" :only-content="onlyContent"
