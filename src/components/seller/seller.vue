@@ -31,26 +31,39 @@
 
       </div>
       <split></split>
-
       <div class="bulletin">
-
         <h1 class="title">公告与活动</h1>
         <div class="bulletin-wrapper">
           <p class="content">{{seller.bulletin}}</p>
         </div>
-
         <ul v-if="seller.supports" class="support-wrapper">
-          <li v-for="support in seller.supports">
-            <div class="support">
+          <li v-for="support in seller.supports" class="support-item">
+            <div class="support border-1px">
               <span class="icon" v-bind:class="discountMap[support.type]"></span>
               <span class="text">{{support.description}}</span>
             </div>
 
           </li>
         </ul>
-
       </div>
-
+      <split></split>
+      <div class="pics">
+        <h1 class="title">商家实景</h1>
+        <div class="pics-wrapper"ref="picsWrapper">
+          <ul class="pics-ul" ref="pics">
+            <li v-for="pic in seller.pics" class="pics-item">
+              <img :src="pic" width="120" height="90">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <split></split>
+      <div class="seller-info">
+        <div class="title border-1px">商家信息</div>
+        <ul>
+          <li v-for="info in seller.infos" class="info-item border-1px">{{info}}</li>
+        </ul>
+      </div>
 
     </div>
   </div>
@@ -59,11 +72,42 @@
 <script type="text/ecmascript-6">
   import star from 'components/star/star'
   import split from 'components/split/split'
+  import BScroll from 'better-scroll'
 
   export default {
     props: {
       seller: {
         type: Object
+      }
+    },
+    methods: {
+      _initScroll() {
+        if (!this.sellerScroll) {
+          this.sellerScroll = new BScroll(this.$refs.seller, {
+            click: true
+          });
+        } else {
+          this.sellerScroll.refresh();
+        }
+      },
+      _initPics() {
+        if (!this.seller.pics) {
+          return;
+        }
+        let picWidth = 120;
+        let marginRight = 6;
+        let picWrapperWidth = (picWidth + marginRight) * this.seller.pics.length - marginRight;
+        this.$refs.pics.style.width = picWrapperWidth + 'px';
+
+        if (!this.picsScroll) {
+          this.picsScroll = new BScroll(this.$refs.picsWrapper, {
+            scrollX: true,
+            eventPassthrough: 'vertical'
+          });
+        } else {
+          this.picsScroll.refresh();
+        }
+
       }
     },
     components: {
@@ -72,6 +116,20 @@
     data() {
       return {
         discountMap: [],
+      }
+    },
+    mounted() {
+      this.$nextTick(function () {
+        this._initScroll();
+        this._initPics();
+      });
+    },
+    watch: {
+      'seller'() {
+        this.$nextTick(function () {
+          this._initScroll();
+          this._initPics();
+        });
       }
     },
     created() {
@@ -130,9 +188,8 @@
             font-size 24px
             color rgb(7, 17, 27)
             font-weight 200
-
     .bulletin
-      padding 18px
+      padding 18px 18px 0 18px
       .bulletin-wrapper
         padding 8px 12px 16px 12px
         border-1px(rgba(7, 17, 27, 0.1))
@@ -141,18 +198,67 @@
           line-height 24px
           font-weight 200
           color rgb(240, 20, 20)
-    .support-wrapper
-      .support
-        .icon
-          vertical-align middle
-          display inline-block
-          width 12px
-          height 12px
-          margin-right 4px
-          background-size 12px 12px
-        .text
-          vertical-align middle
-          display inline-block
-          font-size 12px
-          line-height 12px
+      .support-wrapper
+        .support
+          padding 16px
+          border-1px(rgba(7, 17, 27, 0.1))
+          &:last-child
+            border-none()
+          .icon
+            vertical-align middle
+            display inline-block
+            width 12px
+            height 12px
+            margin-right 4px
+            background-size 12px 12px
+            background-repeat no-repeat
+            &.decrease
+              bg-icon('decrease_4')
+            &.discount
+              bg-icon('discount_4')
+            &.guarantee
+              bg-icon('guarantee_4')
+            &.invoice
+              bg-icon('invoice_4')
+            &.special
+              bg-icon('special_4')
+          .text
+            vertical-align middle
+            display inline-block
+            font-size 12px
+            line-height 12px
+    .pics
+      padding 18px
+      .title
+        margin-bottom 12px
+        font-size 14px
+        line-height 14px
+        color rgb(7, 17, 27)
+      .pics-wrapper
+        width 100%
+        .pics-ul
+          overflow hidden
+          white-space nowrap
+          .pics-item
+            display inline-block
+            margin-right 6px
+            &:last-child
+              margin-right 0
+    .seller-info
+      padding 18px 18px 0 18px
+      .title
+        font-size 14px
+        line-height 14px
+        color rgb(7, 17, 27)
+        padding-bottom 12px
+        border-1px(rgba(7, 17, 27, 0.1))
+      .info-item
+        padding 16px 12px
+        border-1px(rgba(7, 17, 27, 0.1))
+        font-size 12px
+        line-height 16px
+        font-weight 200
+        color rgb(7, 17, 27)
+        &:last-child
+          border-none()
 </style>
