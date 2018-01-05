@@ -22,6 +22,7 @@
 
   import header from './components/header/header';
   import { urlParse } from 'common/js/util';
+  const debug = process.env.NODE_ENV !== 'production';
   export default {
     data() {
       return {
@@ -34,8 +35,8 @@
       }
     },
     created() {
-
-      this.$http.get('api/seller').then((response) => {
+      const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller';
+      this.$http.get(url).then((response) => {
         // this.seller = response.data.data;
         this.seller = Object.assign({}, this.seller, response.data.data);
       })

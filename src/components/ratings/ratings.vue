@@ -62,12 +62,12 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import star from 'components/star/star'
-  import split from 'components/split/split'
-  import ratingselect from 'components/ratingselect/ratingselect'
-  import BScroll from 'better-scroll'
-  import {formatDate} from 'common/js/date.js'
-
+  import star from 'components/star/star';
+  import split from 'components/split/split';
+  import ratingselect from 'components/ratingselect/ratingselect';
+  import BScroll from 'better-scroll';
+  import {formatDate} from 'common/js/date.js';
+  const debug = process.env.NODE_ENV !== 'production';
   const ALL = 2;
   export default {
     props: {
@@ -121,7 +121,8 @@
       }
     },
     mounted() {
-      this.$http.get('api/ratings').then((response) => {
+      const url = debug ? '/api/ratings' : 'http://ustbhuangyi.com/sell/api/ratings';
+      this.$http.get(url).then((response) => {
         var res = response.data;
         if (res.errno === 0) {
           this.ratings = res.data;

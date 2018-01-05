@@ -47,11 +47,11 @@
 </template>
 
 <script>
-  import BScroll from 'better-scroll'
-  import shopcart from 'components/shopcart/shopcart'
-  import cartcontrol from 'components/cartcontrol/cartcontrol'
-  import food from 'components/food/food'
-
+  import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcart/shopcart';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import food from 'components/food/food';
+  const debug = process.env.NODE_ENV !== 'production';
   export default {
     components: {
       shopcart, cartcontrol, food
@@ -71,7 +71,8 @@
       }
     },
     created() {
-      this.$http.get('api/goods').then((response) => {
+      const url = debug ? '/api/goods' : 'http://ustbhuangyi.com/sell/api/goods';
+      this.$http.get(url).then((response) => {
         var res = response.data;
         if (res.errno === 0) {
           this.goods = res.data;
