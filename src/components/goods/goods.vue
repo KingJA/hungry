@@ -31,7 +31,7 @@
                                                                 class="old">¥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol :food="food" @add="addFood"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -41,7 +41,7 @@
 
 
     </div>
-    <shopcart :deliveryPrice="seller.deliveryPrice" :selectFoods="selectFoods" :minPrice="seller.minPrice"></shopcart>
+    <shopcart :deliveryPrice="seller.deliveryPrice" :selectFoods="selectFoods" :minPrice="seller.minPrice" ref="shopcart"></shopcart>
     <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
@@ -147,7 +147,17 @@
         }
         this.selectedFood = food;
         this.$refs.food.show();
+      },
+      addFood(target) {
+        this._drop(target);
+      },
+      _drop(target) {
+        //异步执行下落动画 ，优化体验，不然会和左右和滚动动画抢占资源
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(target);
+        });
       }
+
     }
   }
 </script>
